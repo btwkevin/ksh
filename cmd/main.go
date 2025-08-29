@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	// "fmt"
+	"fmt"
 	"os"
 
 	"github.com/btwkevin/ksh/command"
@@ -10,8 +10,15 @@ import (
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	input, _ := reader.ReadString('\n')
-	inputArr := []string{}
-	inputArr = append(inputArr, input)
-	command.HandleCmd(inputArr)
+	for {
+		fmt.Print("> ")
+
+		input, err := reader.ReadString('\n')
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
+		if err = command.HandleCmd(input); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
+	}
 }
